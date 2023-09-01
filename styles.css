@@ -1,0 +1,16 @@
+body {
+  box-sizing: border-box;
+  background-color: rgb(50, 148, 205);
+}
+
+main {  /* selector por etiqueta */
+  background-color: brown;
+}
+
+#contenedor { /* selector por id */
+  border: 5px grey solid;
+}
+
+.nombre-pokemon { /* selector de clase */
+  color: yellowgreen;
+}
