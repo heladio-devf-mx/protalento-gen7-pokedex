@@ -20,3 +20,7 @@ main {  /* selector por etiqueta */
 .search-form {
 
 }
+
+.card-img-top {
+  min-height: 150px;
+}
