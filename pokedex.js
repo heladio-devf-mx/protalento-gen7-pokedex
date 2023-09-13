@@ -1,34 +1,17 @@
 console.log('JS ready');
 
 // Programa principal del Pokedex
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', async function() {
   console.log('DOMContentLoaded');
-  let pokemonList = getPokemonList().pokemons;
-  // console.log(pokemonList, pokemonList.length);
+  let pokemonList = await getPokemonList();
 
-  // Pintar los pokemones
   /*
+    Pintar los pokemones
     1. Crear la tarjeta para mostrar la información de cada pokemon en la lista
     2. Agregar la tarjeta del pokemon al DOM HTML
   */
-  const pokemonListSectionElement = document.querySelector(".pokemon-list");
+  pintarPokemones(pokemonList);
 
-  for(let position = 0; position < pokemonList.length; position++) {
-    // console.log(`Pokemon ${pokemonList[position].name}`);  // template string
-    let pokemonCardElement = document.createElement("div");
-    let pokemonCardHtml = `
-      <div class="card" style="width: 18rem;">
-        <div class="card-body">
-          <img src="${pokemonList[position].image}" class="card-img-top" alt="Nombre del pokemon">
-          <h5 class="card-title">${pokemonList[position].name}</h5>
-        </div>
-      </div>
-    `;
-
-    pokemonCardElement.innerHTML = pokemonCardHtml;
-      //
-    pokemonListSectionElement.append(pokemonCardElement);
-  }
 
   // Encontrar los elementos con los que vamos a trabajar
   const formElement = document.querySelector("form");
@@ -50,32 +33,53 @@ document.addEventListener('DOMContentLoaded', function() {
     event.preventDefault();
     console.log("No se refresca la página!");
   }
+  // Nos devuelve un JSON (objeto) con los "pokemons"
+  async function getPokemonList() {
+    let pokemons = [];
+    const url = "./data/pokemons-small-api.json";
 
-  function getPokemonList() {
-    return {
-      "pokemons": [
-        {
-          name: "Bulbasaur",
-          image:
-            "https://assets.pokemon.com/assets/cms2/img/pokedex/detail/001.png",
-        },
-        {
-          name: "Pikachu",
-          image:
-            "https://assets.pokemon.com/assets/cms2/img/pokedex/detail/001.png",
-        },
-        {
-          name: "Bulbasaur",
-          image:
-            "https://assets.pokemon.com/assets/cms2/img/pokedex/detail/001.png",
-        },
-        {
-          name: "Squirtle",
-          image:
-            "https://assets.pokemon.com/assets/cms2/img/pokedex/detail/001.png",
-        },
-      ],
-    };
+    try {
+      const responseData = await fetch(url);
+      // console.log(responseData);
+      if (responseData.status === 200) {
+        const pokemonsObject = await responseData.json();
+        // console.log(pokemonsObject);
+        pokemons = pokemonsObject.pokemons;
+        // console.log(pokemons);
+      } else {
+        throw new Error("No se pudo recuperar la lista.");
+      }
+    } catch (error) {
+      console.log("algo salió mal: ", error);
+    }
+    
+    return pokemons;
+  }
+
+  function pintarPokemones(pokemonList) {
+    const pokemonListSectionElement = document.querySelector(".pokemon-list");
+
+    for(let position = 0; position < pokemonList.length; position++) {
+      // console.log(`Pokemon ${pokemonList[position].name}`);  // template string
+      let pokemonCardElement = document.createElement("div");
+      pokemonCardElement.className = "col-md-6 col-lg-4";
+      let pokemonCardHtml = `
+        <div class="card" style="width: 18rem;">
+          <div class="card-body">
+            <img
+              src="${pokemonList[position].ThumbnailImage}"
+              class="card-img-top"
+              alt="${pokemonList[position].name}"
+            />
+            <h5 class="card-title">${pokemonList[position].name}</h5>
+          </div>
+        </div>
+      `;
+
+      pokemonCardElement.innerHTML = pokemonCardHtml;
+      // Agrega al contenedor
+      pokemonListSectionElement.append(pokemonCardElement);
+    }
   }
 });
 
