@@ -5,6 +5,7 @@ body {
 
 main {  /* selector por etiqueta */
   /* background-color: brown; */
+  text-align: center;
 }
 
 #contenedor { /* selector por id */
@@ -23,4 +24,13 @@ main {  /* selector por etiqueta */
 
 .card-img-top {
   min-height: 150px;
+}
+
+.pokemon-list {
+  justify-content: center;
+}
+
+.card-container {
+  display: flex;
+  justify-content: center;
 }
