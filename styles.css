@@ -34,3 +34,7 @@ main {  /* selector por etiqueta */
   display: flex;
   justify-content: center;
 }
+
+.pokemon-type {
+  text-transform: capitalize;
+}

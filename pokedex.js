@@ -16,8 +16,6 @@ document.addEventListener('DOMContentLoaded', async function() {
   // Events Configuration
   // Formulario manejo del evento sumbit
   formElement.addEventListener("submit", formSubmitCallback);
-  // Agregar un manejado de evento (addEventListener)
-  // searchButtonElement.addEventListener("click", buttonCallback);
 
   // Callback Section
   function buttonCallback() {
@@ -39,15 +37,14 @@ document.addEventListener('DOMContentLoaded', async function() {
       return;
     }
 
+    /* Buscar al pokemin en la lista */
     const pokemonResult = []; // 0
-    // Buscar al pokemin en la lista
-    // console.log(pokemonSearch);
     for (let index = 0; index < pokemonList.length; index++) {
       if (pokemonList[index].name === pokemonSearch) {
         pokemonResult.push(pokemonList[index]);
       }
     }
-    // Si existe, vamos a filtrar la lista y solamente pintar el pokemon buscado
+    // Si existe, vamos a limpiar la lista y solamente pintar el pokemon buscado
     if (pokemonResult.length > 0) {
       renderPokemons(pokemonResult);
       return;
@@ -59,10 +56,9 @@ document.addEventListener('DOMContentLoaded', async function() {
       <div class="alert alert-dark" role="alert">
         ${notFoundMessage}
       </div>`;
-    // console.log("Evento submit, No se refresca la página!");
   }
 
-  // Functions/Utils Section
+  /* Functions/Utils Section */
   // Nos devuelve un JSON (objeto) con los "pokemons"
   async function getPokemonList() {
     let pokemons = [];
@@ -100,7 +96,7 @@ document.addEventListener('DOMContentLoaded', async function() {
       // Estilos para las columnas del pokedex
       pokemonCardElement.className = "col-sm-6 col-lg-4 p-2 card-container";
       let pokemonCardHtml = `
-        <div class="card" style="width: 18rem;">
+        <div class="card" style="width: 18rem;" data-bs-toggle="modal" data-bs-target="#pokemonModal">
           <div class="card-body">
             <img
               src="${pokemonList[position].ThumbnailImage}"
@@ -108,9 +104,31 @@ document.addEventListener('DOMContentLoaded', async function() {
               alt="${pokemonList[position].name}"
             />
             <h5 class="card-title">${pokemonList[position].name}</h5>
+            <p class="pokemon-type">${pokemonList[position].type.join(", ")}</p>
           </div>
         </div>
       `;
+      // Agregar el manejador de evento para el detalle del pokemon
+      pokemonCardElement.addEventListener("click", function () {
+        const modalHeaderTitle = document.querySelector("#pokemonModalLabel");
+        const modalBody = document.querySelector(".modal-body");
+        // Mostrar el nombre en el header del modal
+        // Colocar el nombre del pokemon
+        modalHeaderTitle.innerText = "Información de " + pokemonList[position].name;
+        // Mostrar el detalle en el body del modal
+        // Información de detalle a mostrar
+        modalBody.innerHTML = `
+          <div class="card-body">
+            <img
+              src="${pokemonList[position].ThumbnailImage}"
+              class="card-img-top"
+              alt="${pokemonList[position].name}"
+            />
+            <h5 class="card-title">${pokemonList[position].name}</h5>
+            <p class="pokemon-type">${pokemonList[position].type.join(", ")}</p>
+          </div>
+        `;
+      });
       // Crear la tarjeta del pokemon
       pokemonCardElement.innerHTML = pokemonCardHtml;
       // Agrega al contenedor
@@ -118,8 +136,9 @@ document.addEventListener('DOMContentLoaded', async function() {
     }
   }
 });
+/* Fin del programa principal */
 
-
+/* Global Scope */
 function addNewDiv () {
   // Create a div
   const newDiv = document.createElement("div");
