@@ -40,7 +40,7 @@ document.addEventListener('DOMContentLoaded', async function() {
     /* Buscar al pokemin en la lista */
     const pokemonResult = []; // 0
     for (let index = 0; index < pokemonList.length; index++) {
-      if (pokemonList[index].name === pokemonSearch) {
+      if (pokemonList[index].name.toLowerCase() === pokemonSearch.toLowerCase()) {
         pokemonResult.push(pokemonList[index]);
       }
     }
